@@ -12,10 +12,10 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Use Node.js ${{ input.node-version }}
+    - name: Use Node.js ${{ inputs.node-version }}
       uses: actions/setup-node@v3
       with:
-        node-version: ${{ input.node-version }}
+        node-version: ${{ inputs.node-version }}
 
     - uses: pnpm/action-setup@v2.2.3
       name: Install pnpm
