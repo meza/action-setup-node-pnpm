@@ -27,7 +27,6 @@ runs:
 
     - uses: pnpm/action-setup@v2.2.4
       name: Install pnpm
-      if: inputs.install == 'true'
       id: pnpm-install
       with:
         version: latest
@@ -38,6 +37,7 @@ runs:
       shell: bash
       run: |
         echo "pnpm_cache_dir=$(pnpm store path)" >> $GITHUB_OUTPUT
+    
     - name: Set up cache directory
       id: pnpm-build-data-dir
       shell: bash
@@ -62,4 +62,5 @@ runs:
           ${{ runner.os }}-pnpm-store-
 
     - run: pnpm install --frozen-lockfile
+      if: inputs.install == 'true'
       shell: bash
