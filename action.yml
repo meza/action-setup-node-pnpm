@@ -1,6 +1,10 @@
 name: "Setup node and install dependencies"
 description: "Takes care of the copy-pasta for the cache handling of pnpm"
 inputs:
+  install:
+    description: "Should we run the install command?"
+    required: false
+    default: true
   cache-name:
     description: "The name of the cache to use"
     required: true
@@ -19,6 +23,7 @@ runs:
 
     - uses: pnpm/action-setup@v2.2.4
       name: Install pnpm
+      if: inputs.install == true
       id: pnpm-install
       with:
         version: latest
