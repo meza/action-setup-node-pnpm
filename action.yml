@@ -23,7 +23,7 @@ runs:
 
     - uses: pnpm/action-setup@v2.2.4
       name: Install pnpm
-      if: inputs.install == true
+      if: inputs.install == 'true'
       id: pnpm-install
       with:
         version: latest
