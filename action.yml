@@ -5,63 +5,25 @@ inputs:
     description: "Should we run the install command?"
     required: false
     default: true
-  cache-name:
-    description: "The name of the cache to use"
-    default: "pure-dependencies"
-    required: false
   node-version:
     description: "The version of node to use"
     required: false
     default: "latest"
-  build-cache:
-    description: "The location for build caches"
-    required: false
-    default: ".cache"
 
 runs:
   using: "composite"
   steps:
-    - name: Use Node.js ${{ inputs.node-version }}
-      uses: actions/setup-node@v4.0.3
-      with:
-        node-version: ${{ inputs.node-version }}
-
     - uses: pnpm/action-setup@v4.0.0
       name: Install pnpm
       id: pnpm-install
       with:
         version: latest
         run_install: false
-
-    - name: Get pnpm store directory
-      id: pnpm-cache
-      shell: bash
-      run: |
-        echo "pnpm_cache_dir=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-    - name: Set up cache directory
-      id: pnpm-build-data-dir
-      shell: bash
-      run: mkdir -p ${{ inputs.build-cache }}
-
-    - name: Cache build helpers
-      id: cache-build-data
-      uses: pat-s/always-upload-cache@v3.0.11
-      if: always()
-      env:
-        cache-name: cache-build-data
+    - name: Use Node.js ${{ inputs.node-version }}
+      uses: actions/setup-node@v4.0.3
       with:
-        path: ${{ inputs.build-cache }}
-        key: ${{ runner.os }}-build-data-${{ inputs.cache-name }}
-
-    - uses: pat-s/always-upload-cache@v3.0.11
-      name: Setup pnpm cache
-      with:
-        path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
-        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ inputs.cache-name }}
-        restore-keys: |
-          ${{ runner.os }}-pnpm-store-
-
+        node-version: ${{ inputs.node-version }}
+        cache: 'pnpm'
     - run: pnpm install --frozen-lockfile
       if: inputs.install == 'true'
       shell: bash
