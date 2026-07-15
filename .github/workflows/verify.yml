@@ -1,0 +1,20 @@
+name: Validate action metadata
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-action-metadata:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6.0.3
+
+      - name: Validate action metadata
+        uses: cardinalby/schema-validator-action@2166123eb256fa40baef7e22ab1379708425efc7 # 3.1.1
+        with:
+          file: action.yml
+          schema: https://raw.githubusercontent.com/SchemaStore/schemastore/773fe876b57bb3d35693177b626164570a6bac49/src/schemas/json/github-action.json

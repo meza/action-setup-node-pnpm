@@ -4,7 +4,7 @@ inputs:
   install:
     description: "Should we run the install command?"
     required: false
-    default: true
+    default: "true"
   node-version:
     description: "The version of node to use"
     required: false
